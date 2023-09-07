@@ -1,0 +1,29 @@
+.partner__slider {
+    padding: 5rem 0px;
+
+    .swiper-slide {
+        padding: 2rem;
+    }
+
+    .swiper-wrapper {
+        width: 100%;
+    }
+
+    .slide-inner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 8rem;
+        width: auto;
+    }
+
+    .swiper-slide {
+        position: relative;
+    }
+}
+
+.image--cover {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
