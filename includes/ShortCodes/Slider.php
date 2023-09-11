@@ -7,10 +7,21 @@ use WP_Query;
 class Slider
 {
     private static $slide_total_amount = 10;
-    private static $slide_breakpoints = [
-        'desktop' => 6,
-        'tablet' => 4,
-        'mobile' => 2,
+    private static $slider_attributes = [
+        'amount_of_posts' => 10,
+        'space_between' => 20,
+        'slides_mobile' => 1,
+        'slides_tablet' => 2,
+        'slides_desktop' => 3,
+        'show_navigation' => false,
+        'show_pagination' => false,
+        'speed' => 2000,
+    ];
+
+    private static $default_breakpoints = [
+        'slides_mobile' => 768,
+        'slides_tablet' => 990,
+        'slides_desktop' => 1200,
     ];
 
     /**
@@ -21,8 +32,6 @@ class Slider
     public function __construct()
     {
         add_shortcode('partner_slider', [$this, 'renderSlider']);
-
-        add_action('wp_enqueue_scripts', [$this, 'loadPluginAssets']);
     }
 
     /**
@@ -30,8 +39,14 @@ class Slider
      *
      * @return void
      */
-    public static function renderSlider()
+    public static function renderSlider($attributes)
     {
+        // Inside your shortcode function
+        $attributes = shortcode_atts(self::$slider_attributes, $attributes);
+
+        $show_pagination = self::checkBoolean($attributes['show_pagination']);
+        $show_nagination = self::checkBoolean($attributes['show_navigation']);
+
         $query = new WP_Query([
             'post_type' => 'logos',
             'showposts' => self::$slide_total_amount,
@@ -39,25 +54,15 @@ class Slider
 
         if ($query->have_posts()) {
             $options = [
-                'slidesPerView' => 2,
-                'spaceBetween' => 20,
+                'slidesPerView' => $attributes['slides_mobile'],
+                'spaceBetween' =>  $attributes['space_between'],
                 'autoplay' => [
-                    'delay' => 3000
+                    'delay' => $attributes['speed']
                 ],
-                'speed' => 400,
-                'pagination' => [
-                    'el' => '.swiper-pagination',
-                    'clickable' => true
-                ],
-                // 'navigation' => [
-                //     'nextEl' => '.swiper-button-next',
-                //     'prevEl' => '.swiper-button-prev'
-                // ],
-                'breakpoints' => [
-                    768 => [
-                        'slidesPerView' => 4
-                    ]
-                ]
+                'speed' => $attributes['speed'],
+                'pagination' => self::showPagination($show_pagination),
+                'navigation' => self::showNavigation($show_nagination),
+                'breakpoints' => self::setupSliderBreakpoints($attributes),
             ];
             $swiper_options_json = json_encode($options);
 
@@ -70,15 +75,25 @@ class Slider
             wp_reset_postdata();
 
             $output .= '</div>';
-            $output .= '<div class="swiper-pagination"></div>';
 
-            $output .= ' <div class="swiper-button-prev"></div><div class="swiper-button-next"></div>';
+            if ($show_pagination) :
+                $output .= '<div class="swiper-pagination"></div>';
+            endif;
+
+            if ($show_nagination) :
+                $output .= '<div class="swiper-pagintation">';
+                $output .= '<div class="swiper-button-prev"></div>';
+                $output .= '<div class="swiper-button-next"></div>';
+                $output .= '</div>';
+            endif;
 
             $output .= '</section>';
 
+            // Finally add styles and scripts to load only when shortcode is beging used.
+            self::loadPluginAssets();
+
             return $output;
         }
-
         return;
     }
 
@@ -118,17 +133,80 @@ class Slider
     }
 
     /**
+     * show pagination if the parameter is true
+     *
+     * @param [type] $attribute
+     * @return void
+     */
+    private static function showPagination($show_pagination)
+    {
+        return self::checkBoolean($show_pagination) ? [
+            'el' => '.swiper-pagination',
+            'clickable' => true,
+        ] : false;
+    }
+
+    /**
+     * show navigation if the parameter is true
+     *
+     * @param [type] $attribute
+     * @return void
+     */
+    private static function showNavigation($show_navigation)
+    {
+        return self::checkBoolean($show_navigation) ? [
+            'nextEl' => '.swiper-button-next',
+            'prevEl' => '.swiper-button-prev',
+        ] : false;
+    }
+
+    /**
+     * Setup breakpoints for slider and make them adjustable for users
+     *
+     * @return void
+     */
+    private static function setupSliderBreakpoints($attributes)
+    {
+        $breakpoints = [];
+
+        $default_breakpoints = self::$default_breakpoints;
+
+        foreach ($default_breakpoints as $breakpoint_name => $default_breakpoint) {
+            $breakpoint_size = intval(str_replace('breakpoint_', '', $default_breakpoint));
+
+            if (array_key_exists($breakpoint_name, $attributes) && $attributes[$breakpoint_name] !== null) {
+                $breakpoints[$breakpoint_size] = [
+                    'slidesPerView' => $attributes[$breakpoint_name]
+                ];
+            }
+        }
+
+        return $breakpoints;
+    }
+
+    /**
      * load styles from source
      *
      * @return void
      */
-    function loadPluginAssets()
+    public static function loadPluginAssets()
     {
-        
         wp_enqueue_style('swiper-slider-css',  '//cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css');
-        wp_enqueue_style('wer-partnerslider-css',  WER_PLUGIN_URL  . 'dist/css/main.css');
-
         wp_enqueue_script('swiper-slider-js',  '//cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js', [], '', true);
+
+        wp_enqueue_style('wer-partnerslider-css',  WER_PLUGIN_URL  . 'dist/css/main.css');
         wp_enqueue_script('wer-partnerslider-s',  WER_PLUGIN_URL . 'dist/js/bundle.js', [], '', true);
+    }
+
+    /**
+     * return boolean value from strings
+     *
+     * @param [type] $value
+     * @return void
+     */
+    private static function checkBoolean($value)
+    {
+        if (!$value) return;
+        return json_decode(strtolower($value));
     }
 }

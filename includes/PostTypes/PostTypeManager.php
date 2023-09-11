@@ -85,12 +85,11 @@ class PostTypeManager
         // Add an admin notice for the "logos" custom post type
         global $pagenow;
 
-        var_dump($pagenow);
-
         // Check if we are on the edit screen of the "logos" custom post type
         if ($pagenow == 'edit.php' && isset($_GET['post_type']) && $_GET['post_type'] == 'logos') {
             echo '<div class="notice notice-info">';
-            echo '<p>You can show the logo\'s with shortcode <strong>[\'partner_slider\']</strong></p>';
+            echo '<p>You can show the logo\'s with shortcode <strong>[partner_slider]</strong><br />
+            Optional parameters are: <i>amount_of_posts, slides_mobile, slides_tablet, slides_desktop, show_navigation, show_pagination and speed</i><br /><br /></p>';
             echo '</div>';
         }
     }
