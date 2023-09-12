@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Partner Slider
  * Description: Slider for adding partners as custom post types and show them with the use of a shortcode.
- * Version: 0.0.1
+ * Version: 1.0.0
  * Author: We'r Media
  * Author URI: https://wermedia.nl
  * Text Domain: wer-partner-slider
@@ -21,7 +21,6 @@ if (!defined('WER_SLIDER_PLUGIN_PATH')) {
 if (!defined('WER_SLIDER_PLUGIN_PATH')) {
     define('WER_SLIDER_PLUGIN_URL', plugin_dir_url(__FILE__));
 }
-
 
 // Require autoload file.
 if ( file_exists( WER_SLIDER_PLUGIN_PATH . 'includes/Utils/Autoloader.php' ) ) {
