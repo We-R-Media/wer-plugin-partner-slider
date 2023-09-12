@@ -18,15 +18,15 @@ class PostTypeManager
     /**
      * setup and initilize custom post types
      */
-    public static function initializePostTypes() {
-        add_action('init', function() {
+    public static function initializePostTypes()
+    {
+        add_action('init', function () {
             self::registerPostType('logos', 'Logo', 'Logo\'s');
         });
 
-        add_action('admin_notices', function() {
+        add_action('admin_notices', function () {
             self::showAdminNotice();
         });
-
     }
 
     /**
@@ -81,7 +81,8 @@ class PostTypeManager
      *
      * @return void
      */
-    private static function showAdminNotice() {
+    private static function showAdminNotice()
+    {
         // Add an admin notice for the "logos" custom post type
         global $pagenow;
 

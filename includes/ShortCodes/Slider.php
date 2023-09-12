@@ -125,7 +125,7 @@ class Slider
         if (has_post_thumbnail()) :
             $image = get_the_post_thumbnail($postID, 'full', ['class' => 'image--cover']);
         else :
-            $image_path = WER_PLUGIN_URL . 'assets/images/fallback-image.png';
+            $image_path = WER_SLIDER_PLUGIN_URL . 'assets/images/fallback-image.png';
             $image = "<img class='image--cover' src='{$image_path}' alt='' />";
         endif;
 
@@ -194,8 +194,8 @@ class Slider
         wp_enqueue_style('swiper-slider-css',  '//cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css');
         wp_enqueue_script('swiper-slider-js',  '//cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js', [], '', true);
 
-        wp_enqueue_style('wer-partnerslider-css',  WER_PLUGIN_URL  . 'dist/css/main.css');
-        wp_enqueue_script('wer-partnerslider-s',  WER_PLUGIN_URL . 'dist/js/bundle.js', [], '', true);
+        wp_enqueue_style('wer-partnerslider-css',  WER_SLIDER_PLUGIN_URL  . 'dist/css/main.css');
+        wp_enqueue_script('wer-partnerslider-s',  WER_SLIDER_PLUGIN_URL . 'dist/js/bundle.js', [], '', true);
     }
 
     /**

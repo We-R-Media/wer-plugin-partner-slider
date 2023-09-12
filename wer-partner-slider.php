@@ -14,18 +14,18 @@ use Wer\PartnerSlider\Autoloader;
 use Wer\PartnerSlider\PostTypeManager;
 use Wer\PartnerSlider\Slider;
 
-if (!defined('WER_PLUGIN_PATH')) {
-    define('WER_PLUGIN_PATH', plugin_dir_path(__FILE__));
+if (!defined('WER_SLIDER_PLUGIN_PATH')) {
+    define('WER_SLIDER_PLUGIN_PATH', plugin_dir_path(__FILE__));
 }
 
-if (!defined('WER_PLUGIN_PATH')) {
-    define('WER_PLUGIN_URL', plugin_dir_url(__FILE__));
+if (!defined('WER_SLIDER_PLUGIN_PATH')) {
+    define('WER_SLIDER_PLUGIN_URL', plugin_dir_url(__FILE__));
 }
 
 
 // Require autoload file.
-if ( file_exists( WER_PLUGIN_PATH . 'includes/Utils/Autoloader.php' ) ) {
-    require_once WER_PLUGIN_PATH . 'includes/Utils/Autoloader.php';
+if ( file_exists( WER_SLIDER_PLUGIN_PATH . 'includes/Utils/Autoloader.php' ) ) {
+    require_once WER_SLIDER_PLUGIN_PATH . 'includes/Utils/Autoloader.php';
 }
 
 /**
