@@ -14,11 +14,17 @@ use Wer\PartnerSlider\Autoloader;
 use Wer\PartnerSlider\PostTypeManager;
 use Wer\PartnerSlider\Slider;
 
-define('WER_PLUGIN_PATH', plugin_dir_path(__FILE__));
-define('WER_PLUGIN_URL', plugin_dir_url(__FILE__));
+if (!defined('WER_PLUGIN_PATH')) {
+    define('WER_PLUGIN_PATH', plugin_dir_path(__FILE__));
+}
+
+if (!defined('WER_PLUGIN_PATH')) {
+    define('WER_PLUGIN_URL', plugin_dir_url(__FILE__));
+}
+
 
 // Require autoload file.
-if ( file_exists( WER_PLUGIN_PATH . 'includes/Utils/Autoloader.php' )) {
+if ( file_exists( WER_PLUGIN_PATH . 'includes/Utils/Autoloader.php' ) ) {
     require_once WER_PLUGIN_PATH . 'includes/Utils/Autoloader.php';
 }
 
@@ -26,7 +32,7 @@ if ( file_exists( WER_PLUGIN_PATH . 'includes/Utils/Autoloader.php' )) {
  * Initialize the plugin.
  * First we create and call an autoloader to automatically add new classes
  */
-function init()
+function wer_plugin_slider_init()
 {
     Autoloader::register();
 
@@ -34,4 +40,4 @@ function init()
     
     $slider = new Slider();
 }
-add_action('plugins_loaded', 'init');
+add_action('plugins_loaded', 'wer_plugin_slider_init');
