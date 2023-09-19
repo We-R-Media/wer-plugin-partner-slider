@@ -18,7 +18,7 @@ if (!defined('WER_SLIDER_PLUGIN_PATH')) {
     define('WER_SLIDER_PLUGIN_PATH', plugin_dir_path(__FILE__));
 }
 
-if (!defined('WER_SLIDER_PLUGIN_PATH')) {
+if (!defined('WER_SLIDER_PLUGIN_URL')) {
     define('WER_SLIDER_PLUGIN_URL', plugin_dir_url(__FILE__));
 }
 
